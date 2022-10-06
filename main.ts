@@ -1,9 +1,16 @@
+input.onButtonPressed(Button.B, function () {
+    let 저장된_값 = 0
+    OLED.writeNumNewLine(저장된_값)
+})
 let _500원 = 0
 let _100원 = 0
-tinkercademy.crashSensorSetup(DigitalPin.P1)
+pins.setPull(DigitalPin.P1, PinPullMode.PullUp)
+pins.setPull(DigitalPin.P2, PinPullMode.PullUp)
 let 스위치 = true
 OLED.init(128, 64)
-let strip2 = neopixel.create(DigitalPin.P2, 24, NeoPixelMode.RGB)
+let strip = neopixel.create(DigitalPin.P5, 24, NeoPixelMode.RGB)
+strip.showRainbow(1, 360)
+strip.show()
 basic.forever(function () {
     if (input.buttonIsPressed(Button.A)) {
         pins.servoWritePin(AnalogPin.P3, 180)
@@ -14,26 +21,16 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
-    if (tinkercademy.crashSensor()) {
-        스위치 = !(스위치)
-    }
-    if (스위치 == true) {
+    if (pins.digitalReadPin(DigitalPin.P1) == 0) {
+        _100원 = 100
+    } else {
         _100원 = 100
     }
-    if (스위치 == false) {
-        _100원 = 100
-    }
-    basic.pause(500)
 })
 basic.forever(function () {
-    if (tinkercademy.crashSensor()) {
-        스위치 = !(스위치)
-    }
-    if (스위치 == true) {
+    if (pins.digitalReadPin(DigitalPin.P2) == 0) {
+        _500원 = 500
+    } else {
         _500원 = 500
     }
-    if (스위치 == false) {
-        _500원 = 500
-    }
-    basic.pause(500)
 })
